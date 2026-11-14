@@ -1,0 +1,27 @@
+import type { Metadata } from "next";
+import { Josefin_Sans } from "next/font/google";
+import "./globals.css";
+import { SiteHeader } from "@/components/common/site-header";
+import { SiteFooter } from "@/components/common/site-footer";
+
+const josefinSans = Josefin_Sans({
+  subsets: ["latin"],
+});
+
+export const metadata: Metadata = {
+  title: "Wanderlast | Discover Your Next Adventure",
+  description:
+    "Explore breathtaking destinations and create unforgettable memories with our curated travel experiences.",
+};
+
+export default function RootLayout({ children }: LayoutProps<"/">) {
+  return (
+    <html lang="en" className={`${josefinSans.className}  h-full antialiased`}>
+      <body className="min-h-full flex flex-col">
+        <SiteHeader />
+        {children}
+        <SiteFooter />
+      </body>
+    </html>
+  );
+}
