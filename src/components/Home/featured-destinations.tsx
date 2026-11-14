@@ -1,9 +1,13 @@
+import { io } from "next/cache";
+
 import { FeaturedDestinationsCarousel } from "@/components/Home/featured-destinations-carousel";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Destination } from "@/lib/destinations";
+import type { Destination } from "@/lib/destinations";
 
 export async function FeaturedDestinations() {
   let destinations: Destination[] = [];
+
+  await io();
 
   try {
     const response = await fetch(
@@ -19,14 +23,6 @@ export async function FeaturedDestinations() {
     console.error(error);
     destinations = [];
   }
-
-  return (
-    <section className="bg-background py-16 md:py-20">
-      <div className="mx-auto w-full max-w-6xl px-6 md:px-10">
-        <FeaturedDestinationsCarousel destinations={destinations} />
-      </div>
-    </section>
-  );
 
   return (
     <section className="bg-background py-16 md:py-20">

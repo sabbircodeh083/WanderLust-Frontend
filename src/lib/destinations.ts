@@ -1,4 +1,4 @@
-import { getServerJwtToken } from "./Token/getServerToken";
+import { io } from "next/cache";
 
 export type Destination = {
   _id: string;
@@ -24,10 +24,9 @@ function getApiUrl() {
 }
 
 export async function getDestinations(): Promise<Destination[]> {
+  await io();
+
   const res = await fetch(`${getApiUrl()}/destinations`, {
-    headers: {
-      Authorization: `Bearer ${await getServerJwtToken()}`,
-    },
     cache: "no-store",
   });
 
@@ -45,9 +44,6 @@ export async function getDestination(id: string): Promise<Destination | null> {
 
   const res = await fetch(`${getApiUrl()}/destinations/${id}`, {
     cache: "no-store",
-    headers: {
-      Authorization: `Bearer ${await getServerJwtToken()}`,
-    },
   });
 
   if (res.status === 404) {
