@@ -1,5 +1,7 @@
 import { io } from "next/cache";
 
+import { getServerJwtToken } from "./Token/getServerToken";
+
 export type Destination = {
   _id: string;
   destinationName: string;
@@ -28,6 +30,9 @@ export async function getDestinations(): Promise<Destination[]> {
 
   const res = await fetch(`${getApiUrl()}/destinations`, {
     cache: "no-store",
+    headers: {
+      Authorization: `Bearer ${await getServerJwtToken()}`,
+    },
   });
 
   if (!res.ok) {
@@ -42,8 +47,13 @@ export async function getDestination(id: string): Promise<Destination | null> {
     return null;
   }
 
+  await io();
+
   const res = await fetch(`${getApiUrl()}/destinations/${id}`, {
     cache: "no-store",
+    headers: {
+      Authorization: `Bearer ${await getServerJwtToken()}`,
+    },
   });
 
   if (res.status === 404) {
